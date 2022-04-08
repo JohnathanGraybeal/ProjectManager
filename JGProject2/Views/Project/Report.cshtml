@@ -1,0 +1,131 @@
+﻿@model IEnumerable<JGProject2.Models.ViewModels.ProjectReportVM>
+
+@{
+    var alreadyFilled = new List<string>();
+    var roleAlreadyThere = new List<string>();
+    decimal hourlySum = 0;
+    ViewData["Title"] = "Report";
+}
+
+<h1>Report</h1>
+ 
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </dt>
+        
+
+        <dd class="col-sm-10">
+            @foreach (var parentItem in Model)
+            {
+                if (alreadyFilled.Contains(parentItem.ProjectName))
+                {
+                    continue;
+                }
+                else
+                {
+                    alreadyFilled.Add(parentItem.ProjectName);
+                    hourlySum = 0;
+                }
+
+                <table class="table">
+                    <thead>
+                        <tr>
+
+                            <th>@Html.DisplayFor(model => parentItem.ProjectName)</th>
+
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => parentItem.NumPeople)</th>
+                            <th>@Html.DisplayNameFor(model => parentItem.TotalHourly)</th>
+                        </tr>
+                        @foreach (var rate in Model)
+                        {
+                            if (rate.ProjectName == parentItem.ProjectName)
+                            {
+                                hourlySum += rate.HourlyRate;
+                            }
+                            parentItem.TotalHourly = hourlySum;
+                        }
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => parentItem.NumPeople)</td>
+                            <td>@Html.DisplayFor(modelItem => parentItem.TotalHourly)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => parentItem.FirstName)</th>
+                            <th>@Html.DisplayNameFor(model => model.MiddleName)</th>
+                            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+                            <th>@Html.DisplayNameFor(model => model.Role)</th>
+                            <th>@Html.DisplayNameFor(model => model.HourlyRate)</th>
+                        </tr>
+
+
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            if (item.ProjectName == parentItem.ProjectName)
+                            {
+
+
+
+
+                                <tr>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FirstName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MiddleName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LastName)
+                                    </td>
+                                    <td>
+                                        @foreach (var role in Model)
+                                        {
+                                            if (roleAlreadyThere.Contains(role.Role))
+                                            {
+                                                continue;
+                                            }
+                                            else
+                                            {
+                                                if (role.FirstName == parentItem.FirstName &&
+                                                    role.MiddleName == parentItem.MiddleName &&
+                                                    role.LastName == parentItem.LastName)
+                                                {
+                                                    roleAlreadyThere.Add(role.Role);
+                                                    @Html.DisplayFor(modelItem => item.Role)
+                                                    <br />
+                                                }
+
+                                            }
+
+                                            
+
+                                        }
+
+
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.HourlyRate)
+                                    </td>
+                                </tr>
+                                roleAlreadyThere.Clear();
+
+
+
+                            }
+
+
+                        }
+                    </tbody>
+                </table>
+               
+            }
+
+        </dd>
+    </dl>
+</div>

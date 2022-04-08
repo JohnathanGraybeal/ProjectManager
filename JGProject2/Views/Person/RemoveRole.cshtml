@@ -1,0 +1,36 @@
+﻿@model JGProject2.Models.ViewModels.RemoveRoleVM
+
+@{
+    var roles = (List<AppRole>)ViewData["Roles"];
+    var person = (Person)ViewData["Person"];
+    var project = (Project)ViewData["Project"];
+    ViewData["Title"] = "RemoveRole";
+}
+
+<h1>Remove Role from @person.FirstName @person.LastName</h1>
+
+<h3>Are you sure you want to delete this role from @person.FirstName @person.LastName?</h3>
+<div>
+   
+    <hr />
+    
+        <form asp-action="RemoveRole">
+            
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="form-group">
+                    
+                    <select id="RoleId" asp-for="RoleId" class="form-control">
+                        @foreach (var role in roles)
+                        {
+                            <option value="@role.Id">@role.Name</option>
+                        }
+
+                    </select>
+                    <span asp-validation-for="RoleId" class="text-danger"></span>
+                </div>
+
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <a asp-controller="Project"asp-action="Details" asp-route-id="@project.Id">Back to Project Details</a>
+        </form>
+</div>

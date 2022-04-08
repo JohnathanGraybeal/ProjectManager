@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var peopleCount = (int)ViewData["People"];
+    var projectCount = (int)ViewData["Projects"];
+    var roleCount = (int)ViewData["Roles"];
+
+}
+
+        <div class="jumbotron" style="width:100%">
+            <div class="container-fluid text-center">
+                <h1 class="display-3">Welcome to your Project Management page @User.Identity.Name</h1>
+                <h2>Current Number of Projects: @projectCount</h2>
+                <p><a class="btn btn-primary btn-lg" role="button"  asp-area="" asp-controller="Project" asp-action="Index">Manage Projects &raquo;</a></p>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row text-center">
+                <div class="col-md-6 ">
+                    <h2>Number Of People: @peopleCount</h2>
+                    <p><a class="btn btn-primary" asp-area="" asp-controller="Person" asp-action="Index" role="button">Manage People &raquo;</a></p>
+                </div>
+                <div class="col-md-6 ">
+                    <h2>Project Roles: @roleCount </h2>
+                    <p><a class="btn btn-primary" asp-area="" asp-controller="Role" asp-action="Index" role="button">Manage Project Roles &raquo;</a></p>
+
+                </div>
+
+            </div>
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <h2>Reports</h2>
+                    <p><a class="btn btn-primary" asp-area="" asp-controller="Project" asp-action="Report" role="button">View Project Report &raquo;</a></p>
+                    <p><a class="btn btn-primary" asp-area="" asp-controller="Person" asp-action="Report" role="button">View People Report &raquo;</a></p>
+                </div>
+                
+
+            </div>
+
+            
+
+        </div>
+
+

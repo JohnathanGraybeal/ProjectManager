@@ -1,0 +1,123 @@
+﻿@model IEnumerable<JGProject2.Models.ViewModels.PersonReportVM>
+
+@{
+    var alreadyFilled = new List<string>();
+    var roleAlreadyThere = new List<string>();
+    decimal hourlySum = 0;
+    ViewData["Title"] = "Report";
+}
+
+<h1>Report</h1>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+
+        <dd class="col-sm-10">
+            @foreach (var parentItem in Model)
+            {
+                if (alreadyFilled.Contains(parentItem.ProjectName))
+                {
+                    continue;
+                }
+                else
+                {
+                    alreadyFilled.Add(parentItem.ProjectName);
+                    hourlySum = 0;
+                }
+
+                <table class="table">
+                    <thead>
+                        <tr>
+
+                            <th>@Html.DisplayFor(model => parentItem.Name)</th>
+
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => parentItem.NumProjects)</th>
+                            <th>@Html.DisplayNameFor(model => parentItem.HourlyRate)</th>
+                        </tr>
+
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => parentItem.NumProjects)</td>
+                            <td>@Html.DisplayFor(modelItem => parentItem.HourlyRate)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.ProjectName)</th>
+                            <th>@Html.DisplayNameFor(model => model.Role)</th>
+                            <th>@Html.DisplayNameFor(model => parentItem.TotalHourly)</th>
+                        </tr>
+                        @foreach (var rate in Model)
+                        {
+                            if (rate.ProjectName == parentItem.ProjectName)
+                            {
+                                hourlySum += rate.HourlyRate;
+                            }
+                            parentItem.TotalHourly = hourlySum;
+                        }
+
+
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            if (item.Name == parentItem.Name)
+                            {
+
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProjectName)
+                            </td>
+
+
+                            <td>
+                                @foreach (var role in Model)
+                                {
+                                    if (roleAlreadyThere.Contains(role.Role))
+                                    {
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        if (role.Name == parentItem.Name
+                                            )
+                                        {
+                                            roleAlreadyThere.Add(role.Role);
+                                            @Html.DisplayFor(modelItem => item.Role)
+                                            <br />
+                                        }
+
+                                    }
+
+
+
+                                }
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => parentItem.TotalHourly)
+                            </td>
+
+
+                        </tr>
+                                roleAlreadyThere.Clear();
+
+
+
+                            }
+
+
+                        }
+                    </tbody>
+                </table>
+
+            }
+
+        </dd>
+    </dl>
+</div>
